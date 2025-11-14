@@ -22,7 +22,7 @@ Then we sent transactions to involve the functions of the three contracts. The t
 
 The above transactions made the corresponding contract's storage layout change, which can be observed on the etherscan explorer. For example, [the ERC20 transfer tx](https://sepolia.etherscan.io/tx/0x2329f65bd36299b3c6f42a1da89907f3ce538611f02479253c8385305354f18e#statechange) changed two slots of the ERC20 contract (whose address is 0xaDD26079...a435Abdf5)：
 
-![image-20251112101240151](slots statistics in bridgeX evaluation.assets/image-20251112101240151.png)
+![image-20251112101240151](./src/image-20251112101240151.png)
 
 
 
