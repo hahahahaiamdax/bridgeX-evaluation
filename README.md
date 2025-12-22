@@ -1,6 +1,6 @@
 # bridgeX-evaluation
 ## slots statistics
-We evaluate BridgeX's costs of data/token migration between L1/L2 blockchains for different businesses: ERC20, Auction, and Member, and the contract code is in the "contracts" folder.
+We evaluate BridgeX's costs of data/token migration between L1/L2 blockchains for different businesses: ERC20, Auction, and Member, and the business code (i.e., smart contract) is in the "contracts" folder.
 
 To reproduce the evaluation results of BridgeX, you can deploy these three contracts locally and send transactions to call the corresponding function of the contracts. Subsequently, you can use an IDE (such as Remix IDE) to view and count the number of contract slots created/updated due to these transactions. Finally, you can multiply the number of slots by the corresponding universal state interoperation cost to obtain the cost data of BridgeX.
 
