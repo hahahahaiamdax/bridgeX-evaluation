@@ -1,0 +1,19 @@
+# Copyright (c) Open Enclave SDK contributors.
+# Licensed under the MIT License.
+
+flc_enabled: true
+
+sgx_group_name: "sgx_prv"
+
+intel_sgx_packages:
+  - "libsgx-enclave-common"
+  - "libsgx-ae-qve"
+  - "libsgx-ae-pce"
+  - "libsgx-ae-qe3"
+  - "libsgx-qe3-logic"
+  - "libsgx-pce-logic"
+
+intel_dcap_packages:
+  - "libsgx-dcap-ql"
+  - "libsgx-urts"
+  - "libsgx-quote-ex"

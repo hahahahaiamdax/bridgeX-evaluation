@@ -1,0 +1,3 @@
+[submodule "3rdparty/internal/intx"]
+	path = 3rdparty/internal/intx
+	url = https://github.com/OxHainan/intx.git

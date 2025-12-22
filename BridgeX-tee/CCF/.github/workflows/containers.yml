@@ -1,0 +1,44 @@
+name: "Build and Publish SGX Release Containers to ACR"
+
+on:
+  release:
+    types: [published]
+
+env:
+  ACR_REGISTRY: ccfmsrc.azurecr.io
+  ACR_TOKEN_NAME: app-push-token
+
+jobs:
+  build:
+    name: "Build Containers"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Truncate ref
+        run: echo "##[set-output name=tag;]${GITHUB_REF#refs/tags/ccf-}"
+        id: tref
+
+      - name: Build App Dev SGX container
+        run: docker build -f docker/app_dev . --build-arg="extra_vars=--extra-vars ccf_ver=${{steps.tref.outputs.tag}}" -t $ACR_REGISTRY/public/ccf/app/dev:${{steps.tref.outputs.tag}}-sgx -t $ACR_REGISTRY/public/ccf/app/dev:lts-devcontainer
+
+      - name: Build App Run SGX container
+        run: docker build -f docker/app_run . --build-arg="extra_vars=--extra-vars ccf_ver=${{steps.tref.outputs.tag}}" -t $ACR_REGISTRY/public/ccf/app/run:${{steps.tref.outputs.tag}}-sgx
+
+      - name: Build JS App Run SGX container
+        run: docker build -f docker/app_run . --build-arg="extra_vars=--extra-vars ccf_ver=${{steps.tref.outputs.tag}} --extra-vars run_js=true" -t $ACR_REGISTRY/public/ccf/app/run-js:${{steps.tref.outputs.tag}}-sgx
+
+      - name: Log in
+        run: docker login -u $ACR_TOKEN_NAME -p ${{ secrets.ACR_APP_PUSH_TOKEN_PASSWORD }} $ACR_REGISTRY
+
+      - name: Push App Dev SGX container
+        run: docker push $ACR_REGISTRY/public/ccf/app/dev:${{steps.tref.outputs.tag}}-sgx
+
+      - name: Push App Run SGX container
+        run: docker push $ACR_REGISTRY/public/ccf/app/run:${{steps.tref.outputs.tag}}-sgx
+
+      - name: Push JS App Run SGX container
+        run: docker push $ACR_REGISTRY/public/ccf/app/run-js:${{steps.tref.outputs.tag}}-sgx
+
+      - name: Push App Dev SGX devcontainer
+        run: docker push $ACR_REGISTRY/public/ccf/app/dev:lts-devcontainer

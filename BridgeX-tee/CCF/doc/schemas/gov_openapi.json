@@ -1,0 +1,958 @@
+{
+  "components": {
+    "schemas": {
+      "Action": {
+        "properties": {
+          "args": {
+            "$ref": "#/components/schemas/json"
+          },
+          "name": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "name",
+          "args"
+        ],
+        "type": "object"
+      },
+      "Action_array": {
+        "items": {
+          "$ref": "#/components/schemas/Action"
+        },
+        "type": "array"
+      },
+      "Ballot": {
+        "properties": {
+          "ballot": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "ballot"
+        ],
+        "type": "object"
+      },
+      "CodeStatus": {
+        "enum": [
+          "AllowedToJoin"
+        ],
+        "type": "string"
+      },
+      "EndpointMetrics": {
+        "properties": {
+          "metrics": {
+            "$ref": "#/components/schemas/EndpointMetricsEntry_array"
+          }
+        },
+        "required": [
+          "metrics"
+        ],
+        "type": "object"
+      },
+      "EndpointMetricsEntry": {
+        "properties": {
+          "calls": {
+            "$ref": "#/components/schemas/uint64"
+          },
+          "errors": {
+            "$ref": "#/components/schemas/uint64"
+          },
+          "failures": {
+            "$ref": "#/components/schemas/uint64"
+          },
+          "method": {
+            "$ref": "#/components/schemas/string"
+          },
+          "path": {
+            "$ref": "#/components/schemas/string"
+          },
+          "retries": {
+            "$ref": "#/components/schemas/uint64"
+          }
+        },
+        "required": [
+          "path",
+          "method",
+          "calls",
+          "errors",
+          "failures",
+          "retries"
+        ],
+        "type": "object"
+      },
+      "EndpointMetricsEntry_array": {
+        "items": {
+          "$ref": "#/components/schemas/EndpointMetricsEntry"
+        },
+        "type": "array"
+      },
+      "Failure": {
+        "properties": {
+          "reason": {
+            "$ref": "#/components/schemas/string"
+          },
+          "trace": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "type": "object"
+      },
+      "FullMemberDetails": {
+        "properties": {
+          "cert": {
+            "$ref": "#/components/schemas/Pem"
+          },
+          "member_data": {
+            "$ref": "#/components/schemas/json"
+          },
+          "public_encryption_key": {
+            "$ref": "#/components/schemas/Pem"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MemberStatus"
+          }
+        },
+        "required": [
+          "status",
+          "member_data",
+          "cert",
+          "public_encryption_key"
+        ],
+        "type": "object"
+      },
+      "GetCode__Out": {
+        "properties": {
+          "versions": {
+            "$ref": "#/components/schemas/GetCode__Version_array"
+          }
+        },
+        "required": [
+          "versions"
+        ],
+        "type": "object"
+      },
+      "GetCode__Version": {
+        "properties": {
+          "digest": {
+            "$ref": "#/components/schemas/string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/CodeStatus"
+          }
+        },
+        "required": [
+          "digest",
+          "status"
+        ],
+        "type": "object"
+      },
+      "GetCode__Version_array": {
+        "items": {
+          "$ref": "#/components/schemas/GetCode__Version"
+        },
+        "type": "array"
+      },
+      "GetCommit__Out": {
+        "properties": {
+          "transaction_id": {
+            "$ref": "#/components/schemas/TransactionId"
+          }
+        },
+        "required": [
+          "transaction_id"
+        ],
+        "type": "object"
+      },
+      "GetRecoveryShare__Out": {
+        "properties": {
+          "encrypted_share": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "encrypted_share"
+        ],
+        "type": "object"
+      },
+      "GetTxStatus__Out": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/TxStatus"
+          },
+          "transaction_id": {
+            "$ref": "#/components/schemas/TransactionId"
+          }
+        },
+        "required": [
+          "transaction_id",
+          "status"
+        ],
+        "type": "object"
+      },
+      "KeyIdInfo": {
+        "properties": {
+          "cert": {
+            "$ref": "#/components/schemas/Pem"
+          },
+          "issuer": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "issuer",
+          "cert"
+        ],
+        "type": "object"
+      },
+      "MemberId": {
+        "format": "hex",
+        "pattern": "^[a-f0-9]{64}$",
+        "type": "string"
+      },
+      "MemberId_to_Failure": {
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Failure"
+        },
+        "type": "object"
+      },
+      "MemberId_to_FullMemberDetails": {
+        "additionalProperties": {
+          "$ref": "#/components/schemas/FullMemberDetails"
+        },
+        "type": "object"
+      },
+      "MemberId_to_boolean": {
+        "additionalProperties": {
+          "$ref": "#/components/schemas/boolean"
+        },
+        "type": "object"
+      },
+      "MemberId_to_string": {
+        "additionalProperties": {
+          "$ref": "#/components/schemas/string"
+        },
+        "type": "object"
+      },
+      "MemberStatus": {
+        "enum": [
+          "Accepted",
+          "Active"
+        ],
+        "type": "string"
+      },
+      "Pem": {
+        "type": "string"
+      },
+      "Proposal": {
+        "properties": {
+          "actions": {
+            "$ref": "#/components/schemas/Action_array"
+          }
+        },
+        "required": [
+          "actions"
+        ],
+        "type": "object"
+      },
+      "ProposalInfo": {
+        "properties": {
+          "ballots": {
+            "$ref": "#/components/schemas/MemberId_to_string"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure"
+          },
+          "final_votes": {
+            "$ref": "#/components/schemas/MemberId_to_boolean"
+          },
+          "proposer_id": {
+            "$ref": "#/components/schemas/MemberId"
+          },
+          "state": {
+            "$ref": "#/components/schemas/ProposalState"
+          },
+          "vote_failures": {
+            "$ref": "#/components/schemas/MemberId_to_Failure"
+          }
+        },
+        "required": [
+          "proposer_id",
+          "state",
+          "ballots"
+        ],
+        "type": "object"
+      },
+      "ProposalInfoSummary": {
+        "properties": {
+          "ballot_count": {
+            "$ref": "#/components/schemas/uint64"
+          },
+          "failure": {
+            "$ref": "#/components/schemas/Failure"
+          },
+          "proposal_id": {
+            "$ref": "#/components/schemas/string"
+          },
+          "proposer_id": {
+            "$ref": "#/components/schemas/MemberId"
+          },
+          "state": {
+            "$ref": "#/components/schemas/ProposalState"
+          },
+          "vote_failures": {
+            "$ref": "#/components/schemas/MemberId_to_Failure"
+          },
+          "votes": {
+            "$ref": "#/components/schemas/MemberId_to_boolean"
+          }
+        },
+        "required": [
+          "proposal_id",
+          "proposer_id",
+          "state",
+          "ballot_count"
+        ],
+        "type": "object"
+      },
+      "ProposalState": {
+        "enum": [
+          "Open",
+          "Accepted",
+          "Withdrawn",
+          "Rejected",
+          "Failed",
+          "Dropped"
+        ],
+        "type": "string"
+      },
+      "StateDigest": {
+        "properties": {
+          "state_digest": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "state_digest"
+        ],
+        "type": "object"
+      },
+      "SubmitRecoveryShare__In": {
+        "properties": {
+          "share": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "share"
+        ],
+        "type": "object"
+      },
+      "SubmitRecoveryShare__Out": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "type": "object"
+      },
+      "TransactionId": {
+        "pattern": "^[0-9]+\\.[0-9]+$",
+        "type": "string"
+      },
+      "TxStatus": {
+        "enum": [
+          "Unknown",
+          "Pending",
+          "Committed",
+          "Invalid"
+        ],
+        "type": "string"
+      },
+      "boolean": {
+        "type": "boolean"
+      },
+      "json": {},
+      "string": {
+        "type": "string"
+      },
+      "string_to_KeyIdInfo": {
+        "additionalProperties": {
+          "$ref": "#/components/schemas/KeyIdInfo"
+        },
+        "type": "object"
+      },
+      "uint64": {
+        "maximum": 18446744073709551615,
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    "securitySchemes": {
+      "member_signature": {
+        "description": "Request must be signed according to the HTTP Signature scheme. The signer must be a member identity registered with this service.",
+        "scheme": "signature",
+        "type": "http"
+      }
+    },
+    "x-ccf-forwarding": {
+      "always": {
+        "description": "If this request is made to a backup node, it will be forwarded to the primary node for execution.",
+        "value": "always"
+      },
+      "never": {
+        "description": "This call will never be forwarded, and is always executed on the receiving node, potentially breaking session consistency. If this attempts to write on a backup, this will fail.",
+        "value": "never"
+      },
+      "sometimes": {
+        "description": "If this request is made to a backup node, it may be forwarded to the primary node for execution. Specifically, if this request is sent as part of a session which was already forwarded, then it will also be forwarded.",
+        "value": "sometimes"
+      }
+    }
+  },
+  "info": {
+    "description": "This API is used to submit and query proposals which affect CCF's public governance tables.",
+    "title": "CCF Governance API",
+    "version": "2.7.3"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/gov/ack": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StateDigest"
+              }
+            }
+          },
+          "description": "Auto-generated request body schema"
+        },
+        "responses": {
+          "204": {
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/ack/update_state_digest": {
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StateDigest"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/api": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/json"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      }
+    },
+    "/gov/api/metrics": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointMetrics"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      }
+    },
+    "/gov/code": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCode__Out"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      }
+    },
+    "/gov/commit": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCommit__Out"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      }
+    },
+    "/gov/jwt_keys/all": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/string_to_KeyIdInfo"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/local_tx": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "transaction_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTxStatus__Out"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      }
+    },
+    "/gov/members": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberId_to_FullMemberDetails"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      }
+    },
+    "/gov/proposals": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Proposal"
+              }
+            }
+          },
+          "description": "Auto-generated request body schema"
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalInfoSummary"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/proposals/{proposal_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalInfo"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "proposal_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/gov/proposals/{proposal_id}/actions": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "proposal_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/gov/proposals/{proposal_id}/ballots": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "proposal_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ballot"
+              }
+            }
+          },
+          "description": "Auto-generated request body schema"
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalInfoSummary"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/proposals/{proposal_id}/ballots/{member_id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ballot"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "proposal_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "path",
+          "name": "member_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/gov/proposals/{proposal_id}/withdraw": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "proposal_id",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalInfo"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/receipt": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "transaction_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/json"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/recovery_share": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetRecoveryShare__Out"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitRecoveryShare__In"
+              }
+            }
+          },
+          "description": "Auto-generated request body schema"
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmitRecoveryShare__Out"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "security": [
+          {
+            "member_signature": []
+          }
+        ],
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/always"
+        }
+      }
+    },
+    "/gov/tx": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "transaction_id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTxStatus__Out"
+                }
+              }
+            },
+            "description": "Default response description"
+          }
+        },
+        "x-ccf-forwarding": {
+          "$ref": "#/components/x-ccf-forwarding/sometimes"
+        }
+      }
+    }
+  },
+  "servers": []
+}
