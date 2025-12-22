@@ -1,7 +1,10 @@
 # bridgeX-evaluation
 ## slots statistics
+We evaluate BridgeX's costs of data/token migration between L1/L2 blockchains for different businesses: ERC20, Auction, and Member, and the contract code is in the "contracts" folder.
 
-We deployed the three contracts: ERC20, auction, and member on the Sepolia testnet. The contract addresses are:
+To reproduce the evaluation results of BridgeX, you can deploy these three contracts locally and send transactions to call the corresponding function of the contracts. Subsequently, you can use an IDE (such as Remix IDE) to view and count the number of contract slots created/updated due to these transactions. Finally, you can multiply the number of slots by the corresponding universal state interoperation cost to obtain the cost data of BridgeX.
+
+For convenience, we have completed the above steps on the testnet so that you can directly view the statistics of slots. We deployed the three contracts: ERC20, auction, and member on the Sepolia testnet. The contract addresses are:
 
 - ERC20: 0xadd2607935a12814af72c06e4e5bb64a435abdf5
 - Auction：0x586660035bF89175C3b714BB64284635d417aFb2
@@ -26,4 +29,6 @@ The above transactions made the corresponding contract's storage layout change, 
 
 
 
-The slots statistics for bridgeX evaluation may involve multiple transactions, *e.g.*, the slots statistics for the ERC20 contract involves 50 transfer transactions. For convenient, we provide a Python script (*i.e.*, slotsNumStatistics.py) to count the number of changed slots.
+The slots statistics for bridgeX evaluation may involve multiple transactions, *e.g.*, the slots statistics for the ERC20 contract involve 50 transfer transactions. For convenience, we provide a Python script (*i.e.*, slotsNumStatistics.py) to count the number of changed slots.
+
+In addition, this repository does not provide a fully automated script that includes all experimental steps, for example, you need to manually deploy contracts and invoke functions. However, this also provides you with a certain degree of flexibility. You can freely select one or two blockchains and replace the relevant parameters in the slotsNumStatistics.py script (including API interfaces, contract addresses, and transaction hashes) with your own. After running the script, you can obtain the test results of the blockchain you choose.
