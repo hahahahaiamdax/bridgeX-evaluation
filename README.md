@@ -17,7 +17,6 @@ BridgeX builds on top of the Cloak stack to offer *TEE-backed* state migration b
 ### Repository layout (architecture alignment)
 | Path | Role |
 | --- | --- |
-| `contracts/` | Business logic contracts that model ERC20 transfers, auctions, and membership management, deployed on the source chain before escrow. |
 | `client/` | A customized Web3 SDK (`Cloak`) plus benchmarking scripts that connect to BridgeX Service and TEE through mTLS, simulating end-user submissions. |
 | `service/` | Fork of Cloak Service that runs on-chain to manage escrow, proxy upgrades, and whitelist logic. Needed when you reproduce the full onboarding workflow. |
 | `tee/` | Cloak TEE runtime (based on Microsoft CCF and eEVM) that actually executes escrowed contracts inside enclaves. |
@@ -34,7 +33,8 @@ These cover continuous transfers, bursty market actions, and identity-style data
 
 ## Experiment workflow
 To reproduce the evaluation results of BridgeX, you can follow the steps below:
-1. **Deploy contracts** either locally (Ganache/anvil) or on Sepolia using the sources in `contracts/`.
+1. **Deploy contracts** either locally (Ganache/anvil) or on Sepolia using the sources in `service/contracts/test
+/`.
 2. **Escrow to BridgeX** by following the instructions in `service/README.md`: upgrade the proxy to `ProxyBridge`, call `service.escrow`, and ensure the TEE registers the contract.
 3. **Generate traffic** using the scripts under `client/test` (e.g., `node client/test/index.js <cert-path> <service-addr> <baseline>`) which submit transactions via the Cloak HTTPS provider while simultaneously mirroring calls to the on-chain proxy for comparison.
 4. **Compute migration cost** by observing the number of new slots and updated slots (via IDE such as Remix IDE, interfaces for slots statistics, or inherited counters of TEE runtime), combined with the corresponding universal state interoperation cost, shown in `test-data/update_state`.
@@ -54,7 +54,7 @@ Then we sent transactions to involve the functions of the three contracts. The t
 - ERC20:
   - transfer tx: 0x2329f65bd36299b3c6f42a1da89907f3ce538611f02479253c8385305354f18e
 - Auction:
-  - create auction tx: 0x2329f65bd36299b3c6f42a1da89907f3ce538611f02479253c8385305354f18e
+  - create auction tx: 0x19e12fa01169208ce6eb133cb6ce692c41060933ee89628e7cf1a854cbb31193
   - bid tx: 0x9e24dbb445e8abeabc4ad2edb97782fbd78e3f2ec8140d29036da82038f0d075
 - Member:
   - create member1 tx: 0x0ead6b471d40dff4454dd7d0e1f9a67eee8756ae2d652cfe61db48693a61c4e5
